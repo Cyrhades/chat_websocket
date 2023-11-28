@@ -11,7 +11,7 @@ function tryConnect(exists) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector("#connect_without_auth").addEventListener('click',() => tryConnect(false));
+    document.querySelector("#btnConnect").addEventListener('click',() => tryConnect(false));
 })
 
 socket.on('server:user:exists', () => { tryConnect(true) })
