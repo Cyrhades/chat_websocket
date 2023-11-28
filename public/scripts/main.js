@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
 socket.on('server:user:exists', () => { tryConnect(true) })
 socket.on('server:user:connected', () => {  
     /** afficher l'interface du chat et masquer le bouton de connexion */
+    document.querySelectorAll('.not_authenticated').forEach((element) => {
+        element.classList.add('hide')
+    }) 
+    document.querySelectorAll('.authenticated').forEach((element) => {
+        element.classList.remove('hide')
+    }) 
  })
 
 
