@@ -24,6 +24,7 @@ io.on('connection', (socket) => {
         } else {
             users.push(pseudo)
             socket.emit("server:user:connected") 
+            io.emit('server:user:list', users)
         }
     })
 });

@@ -25,7 +25,17 @@ socket.on('server:user:connected', () => {
     }) 
  })
 
-
+socket.on('server:user:list', (users) => {
+    document.querySelector('#listingUsers').innerHTML = '';
+    if ("content" in document.createElement("template")) {
+        let template = document.querySelector("#usersTpl");
+        users.forEach((user) => {
+            let clone = document.importNode(template.content, true);
+            clone.querySelector("li").textContent = user
+            document.querySelector('#listingUsers').appendChild(clone);
+        })
+    }
+})
 
 
 
