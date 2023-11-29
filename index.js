@@ -28,4 +28,10 @@ io.on('connection', (socket) => {
             io.emit('server:user:list', users)
         }
     })
+
+    socket.on('client:user:disconnect', () => {
+        users.splice(users.indexOf(socket.pseudo),1);
+        socket.emit("server:user:disconnected") 
+        io.emit('server:user:list', users)
+    })
 });

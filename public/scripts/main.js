@@ -10,8 +10,14 @@ function tryConnect(exists) {
     }
 }
 
+function tryDisconnect() {
+    socket.emit('client:user:disconnect')
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector("#btnConnect").addEventListener('click',() => tryConnect(false));
+
+    document.querySelector("#btnDisconnect").addEventListener('click', () => { tryDisconnect(); })
 })
 
 socket.on('server:user:exists', () => { tryConnect(true) })
@@ -23,7 +29,16 @@ socket.on('server:user:connected', () => {
     document.querySelectorAll('.authenticated').forEach((element) => {
         element.classList.remove('hide')
     }) 
- })
+})
+
+socket.on('server:user:disconnected', () => {  
+    document.querySelectorAll('.not_authenticated').forEach((element) => {
+        element.classList.remove('hide')
+    }) 
+    document.querySelectorAll('.authenticated').forEach((element) => {
+        element.classList.add('hide')
+    }) 
+})
 
 socket.on('server:user:list', (users) => {
     document.querySelector('#listingUsers').innerHTML = '';
