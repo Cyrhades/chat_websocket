@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
            socket.emit("server:user:exists") 
         } else {
             users.push(pseudo)
+            socket.pseudo = pseudo;
             socket.emit("server:user:connected") 
             io.emit('server:user:list', users)
         }
