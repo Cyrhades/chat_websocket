@@ -1,7 +1,7 @@
 import UI from "./UI.js"
 export default class Chat {
 
-    constructor(ui) {
+    constructor() {
         this.socket = io.connect(document.location.host);
         this.ui = new UI();
         this.listenWebSocketServer();

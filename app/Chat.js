@@ -35,7 +35,6 @@ export default class Chat {
          }
     }
 
-
     onUserDisconnect(socket) {
         this.users.splice(this.users.findIndex((user) => user.pseudo == socket.user.pseudo),1);
         socket.emit("server:user:disconnected") 
