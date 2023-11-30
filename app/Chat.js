@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import User from './User.js'
+import Message from './Message.js'
 
 export default class Chat {
 
@@ -16,6 +17,8 @@ export default class Chat {
             // Equivalent
             // socket.on('client:user:connect', (pseudo) => this.onUserConnect(socket, pseudo))
             socket.on('client:user:disconnect', this.onUserDisconnect.bind(this, socket))
+
+            socket.on('client:message:send', this.onMessageSend.bind(this, socket))
         });  
     }
 
@@ -34,10 +37,14 @@ export default class Chat {
 
 
     onUserDisconnect(socket) {
-
         this.users.splice(this.users.findIndex((user) => user.pseudo == socket.user.pseudo),1);
         socket.emit("server:user:disconnected") 
         this.io.emit('server:user:list', this.getUsersList())
+    }
+
+    onMessageSend(socket, msg) {
+        const message = new Message(msg, socket.user.pseudo);
+        this.io.emit('server:message:new', message)
     }
 
 

@@ -8,7 +8,8 @@ export default class UI {
 
     listenInterface() {
         document.querySelector("#btnConnect").addEventListener('click',() => this.tryConnect(false));
-        document.querySelector("#btnDisconnect").addEventListener('click', () => { this.tryDisconnect(); })
+        document.querySelector("#btnDisconnect").addEventListener('click', this.tryDisconnect)
+        document.querySelector("#createMessage").addEventListener('keyup', this.sendMessage)
     }
 
     tryConnect(exists) {
@@ -27,6 +28,16 @@ export default class UI {
         document.dispatchEvent(event);
     }
 
+    sendMessage(event) {
+        if(event.keyCode == 13) {
+            let message = document.querySelector("#createMessage").value;
+            if(message != "") {
+                const event = new CustomEvent("local:message:send", { detail: { message } });
+                document.dispatchEvent(event);
+                document.querySelector("#createMessage").value = "";
+            }
+        }
+    }
 
     connected() {
         document.querySelectorAll('.not_authenticated').forEach((element) => {
@@ -55,6 +66,18 @@ export default class UI {
                 clone.querySelector("li").textContent = user
                 document.querySelector('#listingUsers').appendChild(clone);
             })
+        }
+    }
+
+
+    addMessage(message) {
+        if ("content" in document.createElement("template")) {
+            let template = document.querySelector("#messagesTpl");
+            let clone = document.importNode(template.content, true);
+            clone.querySelector("td.time").textContent = message.date;
+            clone.querySelector("td.author").textContent = message.author;
+            clone.querySelector("td.message").textContent = message.content;
+            document.querySelector('#listingMessages').appendChild(clone);
         }
     }
 }
