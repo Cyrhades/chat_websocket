@@ -1,11 +1,13 @@
 import { Server } from "socket.io";
 import User from './User.js'
 import Message from './Message.js'
+import Channel from './Channel.js'
 
 export default class Chat {
 
     constructor(httpServer) {
         this.users = [];
+        this.channels = [new Channel('Général'), new Channel('Programmation'), new Channel('Jeux vidéo')];
         this.io = new Server(httpServer);
 
         this.onConnect();
@@ -32,7 +34,7 @@ export default class Chat {
             let user = new User(pseudo);
             this.users.push(user)
             socket.user = user;
-            socket.emit("server:user:connected") 
+            socket.emit("server:user:connected", this.getChannelsList()) 
             this.io.emit('server:user:list', this.getUsersList())
          }
     }
@@ -51,5 +53,9 @@ export default class Chat {
 
     getUsersList() {
         return this.users.map(user => user.pseudo);
+    }
+
+    getChannelsList() {
+        return this.channels.map(channel => channel.name);
     }
 }

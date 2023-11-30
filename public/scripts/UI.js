@@ -39,7 +39,9 @@ export default class UI {
         }
     }
 
-    connected() {
+    connected(channels) {
+        this.listChannels(channels);
+
         document.querySelectorAll('.not_authenticated').forEach((element) => {
             element.classList.add('hide')
         }) 
@@ -65,6 +67,18 @@ export default class UI {
                 let clone = document.importNode(template.content, true);
                 clone.querySelector("li").textContent = user
                 document.querySelector('#listingUsers').appendChild(clone);
+            })
+        }
+    }
+
+    listChannels(channels) {
+        document.querySelector('#listingChannels').innerHTML = '';
+        if ("content" in document.createElement("template")) {
+            let template = document.querySelector("#channelsTpl");
+            channels.forEach((channel) => {
+                let clone = document.importNode(template.content, true);
+                clone.querySelector("li").textContent = channel
+                document.querySelector('#listingChannels').appendChild(clone);
             })
         }
     }
