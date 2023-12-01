@@ -23,7 +23,14 @@ export default class Chat {
             socket.on('client:message:send', this.onMessageSend.bind(this, socket))
 
             socket.on('disconnect',  this.onUserDisconnect.bind(this, socket))
+
+            socket.on('client:channel:change',  this.onChangeChannel.bind(this, socket))
         });  
+    }
+
+    onChangeChannel(socket, channel) {
+        socket.join(channel);
+        socket.user.joinChannel(channel);
     }
 
     onUserConnect(socket, pseudo) {
@@ -34,6 +41,7 @@ export default class Chat {
             let user = new User(pseudo);
             this.users.push(user)
             socket.user = user;
+            this.onChangeChannel(socket, 'Général');
             socket.emit("server:user:connected", this.getChannelsList()) 
             this.io.emit('server:user:list', this.getUsersList())
          }

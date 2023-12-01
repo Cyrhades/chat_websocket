@@ -78,9 +78,19 @@ export default class UI {
             channels.forEach((channel) => {
                 let clone = document.importNode(template.content, true);
                 clone.querySelector("li").textContent = channel
+                clone.querySelector("li").addEventListener('click', this.changeChannel )
                 document.querySelector('#listingChannels').appendChild(clone);
             })
         }
+        document.querySelector('#listingChannels li').classList.add('active')
+    }
+
+    changeChannel (e) {
+        let li = e.currentTarget;
+        const event = new CustomEvent("local:channel:change", { detail: { channel : li.textContent} });
+        document.dispatchEvent(event);
+        document.querySelector('#listingChannels li.active').classList.remove('active');
+        li.classList.add('active')
     }
 
 
