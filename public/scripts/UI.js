@@ -87,12 +87,18 @@ export default class UI {
 
     changeChannel (e) {
         let li = e.currentTarget;
-        const event = new CustomEvent("local:channel:change", { detail: { channel : li.textContent} });
-        document.dispatchEvent(event);
-        document.querySelector('#listingChannels li.active').classList.remove('active');
-        li.classList.add('active')
+        if(li.classList.contains("active") == false) {
+            const event = new CustomEvent("local:channel:change", { detail: { channel : li.textContent} });
+            document.dispatchEvent(event);
+            document.querySelector('#listingChannels li.active').classList.remove('active');
+            li.classList.add('active')
+        }
     }
 
+    allMessages(messages) {
+        document.querySelector('#listingMessages').innerHTML = "";
+        messages.forEach(this.addMessage);
+    }
 
     addMessage(message) {
         if ("content" in document.createElement("template")) {

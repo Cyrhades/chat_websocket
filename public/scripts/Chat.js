@@ -14,6 +14,7 @@ export default class Chat {
         this.socket.on('server:user:disconnected', this.ui.disconnected)
         this.socket.on('server:user:list', this.ui.listUsers)
         this.socket.on('server:message:new', this.ui.addMessage)
+        this.socket.on('server:message:list', this.ui.allMessages.bind(this.ui))
     }
 
     listenLocalEvent() {
